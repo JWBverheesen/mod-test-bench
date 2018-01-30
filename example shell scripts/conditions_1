@@ -1,0 +1,24 @@
+#!/bin/bash
+
+read -p "What is your name?" name     #-p prompt with a string. 
+                                      # data is stored inside the variable name.
+echo "hello $name"
+
+#-eq = equals                      #commonly used conditions
+#-ne = not equal
+#-le = less than or equal
+#-lt = less than
+#-g = greater than
+#-ge = greater than or equal
+
+read -p "How old are you?" age        #-p prompt with a string. 
+                                      # data is stored inside the variable name.
+if [ $age -ge 18 ]                      # conditional statement. -ge equal or greater
+then
+  echo "You can drive, drink and smoke."
+elif [ $age -eq 17 ]                    # else if -eq means equal to
+then
+  echo "You can drive, drink and smoke next year."
+else
+  echo "You are forbidden to drive, drink and smoke."
+fi                                    # end if statement

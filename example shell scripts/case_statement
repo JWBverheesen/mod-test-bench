@@ -1,0 +1,27 @@
+#!/bin/bash
+
+read -p "how old are you : " age
+
+case $age in                        #open up a case statement
+[0-4])                              #first condition if the value of age is between 0 and 4
+  echo "To young for school"
+  ;;
+
+  5)
+  echo "Go to kindergarten"
+  ;;
+
+[6-9]|1[0-8])                       #check for 6 to 9 and 10 to 18
+  grade=$((age-5))
+  echo "Go to grade $grade"
+  ;;
+
+  *)                                #anything other than 0 to 18 *) means default
+  echo "You are to old for school"
+  ;;
+  esac                              #close case statement
+
+  can_vote=0
+  ((age>= 18?(can_vote=1):(can_vote=0)))  #turnary operator. if true left else right
+
+  echo "Can Vote : $can_vote"

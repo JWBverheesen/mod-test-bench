@@ -1,0 +1,29 @@
+#!/bin/bash
+
+str1=""                       #make some strings
+str2="Sad"
+str3="Happy"
+
+if [ "$str1" ]; then          #check if string is null
+  echo "$str1 is not null"
+fi
+
+if [ -z "$str1" ]; then       #check if string has a value
+  echo "str1 has no value"
+fi
+
+if [ "$str2" == "$str3" ]; then
+  echo "$str2 equals $str3"
+elif [ "$str2 != $str3" ]; then
+  echo "$str2 is not equal to $str3"
+fi
+
+if [ "$str2" > "$str3" ]; then
+  echo "$str2 is greater then $str3"
+elif [ "$str2" < "$str3" ]; then
+  echo "$str2 is less then $str3"
+fi
+
+rm Happy
+#for some reason this shell script will generate a file calles Happy.
+# rm will remove this file.

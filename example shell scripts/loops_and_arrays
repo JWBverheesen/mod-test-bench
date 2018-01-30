@@ -1,0 +1,59 @@
+#!/bin/bash
+
+
+#while loops:::   while a condition is true, do something
+
+num=1
+
+while [ $num -le 10 ]; do     #-le means les than or equal. 
+  echo $num
+  num=$((num+1))
+done
+
+num=1
+
+while [ $num -le 20 ]; do
+  if(( ((num%2)) == 0 )); then    #check if num is even
+    num=$((num + 1))
+    continue                      #jump back to the begining of the while loop, ignoring the code below.
+  fi
+
+  if ((num >= 15)); then
+    break                         #exit the while loop
+  fi
+
+  echo $num
+  num=$((num+1))
+done
+
+#until loops:::  Do something untill a condition is met
+
+num=1
+
+until [ $num -gt 10 ]; do
+  echo $num
+  num=$((num+1))
+done
+
+#use a while loop to get information out of a file
+
+while read day month year; do
+  printf "Day: ${day}\nMonth: ${month}\nYear: ${year}\n"
+
+done < date              #link the while loop to the file
+
+#for loops with array
+
+fav_numbs=(3.14 2.718 .57721 4.6692) #create array
+
+echo "Pi : ${fav_numbs[0]}"         #echo out first element of array
+
+fav_numbs[4]=1.618                  #change a value on the 4th element
+
+echo "GR : ${fav_numbs[4]}"
+
+fav_numbs+=(1 7)                     #add a group of values to the array
+
+for i in ${fav_numbs[*]}; do        #output all array values with a for loop
+  echo $i
+done

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+getDate(){          #create a function getDate
+  date
+  return
+}
+
+getDate             #call function
+
+name="Jarno"        #global variable Variable exists in the entire script
+
+demLocal(){
+  local name="henk" #local variable. Variable only exists in this function
+  return
+}
+
+demLocal            #call function
+
+echo "$name"        #print line
+
+getSum(){
+  local num3=$1     #local variable with first atribute
+  local num4=$2     #local variable with second atribute
+
+  local sum=$((num3+num4))  #create the sum of the values
+
+  echo $sum         #print line
+}
+
+num1=5
+num2=6
+
+sum=$(getSum num1 num2) #global variable sum and call function getSum. atributes included 
+
+echo "The sum is $sum"

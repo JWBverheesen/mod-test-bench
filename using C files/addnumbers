@@ -1,0 +1,22 @@
+#!/bin/bash
+
+CC=gcc                                #compiler
+EXEC=addnum                           #name of the c file
+SRC=addnum.c                          #the source file.c
+
+if [ "$SRC" -nt "$EXEC" ]             #check if there is a newer version of .c
+then
+  echo "rebuilding $EXEC......"
+  $CC -o $EXEC $SRC                   #compile the .c file to a binary file
+fi
+
+SUM=`./$EXEC $1 $2`                   #perform arithmetic
+
+if [ "$?" == 2 ]                      #check the return value of the function
+then
+  echo "error!"
+  exit
+fi
+
+echo "Sum = $SUM"
+echo "Done!"

@@ -1,0 +1,39 @@
+#!/bin/bash
+
+file1="./test_file1"
+file2="./test_file2"
+
+if [ -e "$file1" ]; then            #check if a file exists
+  echo "$file1 exists"
+
+  if [ -f "$file1" ]; then          #check if it's a normal file
+    echo "$file1 is a normal file"
+  fi
+  if [ -r "$file1" ]; then          #check if it's a readable file
+    echo "$file1 is a readable"
+  fi
+  if [ -w "$file1" ]; then          #check if it's a writable file
+    echo "$file1 is a writable"
+  fi
+  if [ -x "$file1" ]; then          #check if it's a executable file
+    echo "$file1 is executable"
+  fi
+  if [ -d "$file1" ]; then          #check if it's a directory
+    echo "$file1 is a directory"
+  fi
+  if [ -L "$file1" ]; then          #check if it's a symbolic link
+    echo "$file1 is a symbolic link"
+  fi
+  if [ -p "$file1" ]; then          #check if it's a pipe
+    echo "$file1 is a pipe"
+  fi
+  if [ -S "$file1" ]; then          #check if it's network socket
+    echo "$file1 is a network socket"
+  fi
+  if [ -G "$file1" ]; then          #check if it's owned by a group
+    echo "$file1 is owned by a group"
+  fi
+  if [ -O "$file1" ]; then          #check if it's owned by the userid
+    echo "$file1 is owned by the userid"
+  fi
+fi

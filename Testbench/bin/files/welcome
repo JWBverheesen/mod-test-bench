@@ -1,0 +1,34 @@
+###############################################################################################
+#                                                                                             #  
+#       .o0NWW:  cWWWWWWWWN0o.                                                                #
+#      kMMMMMMc  lMMMMMMMMMMMMk                Welcome to the plugin Testbench.               #
+#     cMMMMMMMc  lMMMMMMMMMMMMMc                                                              #
+#     lMMMMM0;.  .;0MMMMMMMMMMMo                      Brought to you by:                      #
+#     lMMMMM.      .MMMMMMMWWMMo                                                              #
+#     lMMMMM.      .MMMMMMX .WMo                               MOD                            #
+#     lMMMMM.      .MMMMMMMMMMMo                             DEVICES                          #
+#     cMMMMMK:,,,,:KMMMMMMMMMMMl                                                              #
+#     .XMMMMMMMMMMMMMMMMMMMMMMX.                                                              #
+#       ,lxkOOOOOOOOOOOOOOkxl,                                                                #
+#      ..,,,,,,,,,,,,,,,,,,,,'.                                                               #
+#   :OWMMMMMMMMMMMMMMMMMMMMMMMMW0:                  STEP ONTO THE FUTURE!                     #
+#  dMMMMOl''''''''''''''''''lkMMMMx                                                           #
+#  WMMM0     .x00x.           OMMMW                                                           #
+#  WMMMO     dMMMMd           kMMMM                      Beta Version                         #
+#  WMMMO     dMMMMd           kMMMM                                                           #
+#  WMMMO     dMMMMd           kMMMM           For further information check out:              #
+#  WMMMO     dMMMMd           kMMMM               - Yet to be filled in :)                    #
+#  WMMMO     dMMMMd           kMMMM                                                           #
+#  WMMMO     '0KK0'           kMMMM                                                           #
+#  kMMMWo,..................,oWMMMO                                                           #
+#   oNMMMMMMMMMMMMMMMMMMMMMMMMMMNo                                                            #
+#     .dKNWWWWWWWWWWWWWWWWWWNKx.                                                              #
+#                                                                                             #
+#                                                                                             #
+#  The mod Testbench can perform a number of different plugin tests. Choose between a basic   #
+#  test, audio frequency test, audio impulse test or a MIDI test. Enter -help to view a list  #
+#  of all commands. CPU label generation is based on the current gen MOD DUO's hardware.      #
+#  Sharing resources is not taken into acount when generating a CPU label. The testbench      #
+#  does not take plugin bundles into account. It can only test one plugin at any time.        #
+#                                                                                             #
+###############################################################################################

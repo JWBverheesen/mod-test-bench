@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#comment
+
+myName="Jarno"        #declare variable
+
+declare -r NUM1=5     #declare constant
+
+num2=4                #declare variable
+
+num3=$((NUM1+num2))   #make a function
+num4=$((NUM1-num2))
+num5=$((NUM1*num2))
+num6=$((NUM1/num2))
+
+echo "5 + 4 = $num3"  #print line $=num3 calls function
+echo "5 - 4 = $num4"
+echo "5 * 4 = $num5"
+echo "5 / 4 = $num6"
+
+rand=5                #declare variable
+let rand+=4           #increment variable with +4
+echo "$rand"
+
+echo "rand++ $(( rand++ ))" #print than increment
+echo "++rand $(( ++rand ))" #increment than print
+echo "rand-- $(( rand-- ))" #print than decrement
+echo "--rand $(( --rand ))" #decrement than print
+
+
+cat<< END                   #print exactly what is typed between cat<< END and END
+this text prints
+on
+many lined
+END

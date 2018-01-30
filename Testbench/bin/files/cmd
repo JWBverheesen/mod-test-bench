@@ -1,0 +1,9 @@
+List of commands used to operate the MOD Testbench:
+
+full-test           -perform a full test including: memory leak test, audio tests and cpu label 
+audio frequency     -perform a frequency sweep test
+audio impulse       -perform an impulse responce test
+midi                -perform a MIDI test
+help                -view a list of commands
+exit                -exit shell
+lv2ls               -view list of plugin URI's that are in the LV2 path

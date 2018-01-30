@@ -1,0 +1,172 @@
+#!/bin/bash
+
+CC=gcc                                 #compiler
+EXEC1=calc                             #name of the exacutable binary file
+SRC1=calc.c                            #the source file.c
+EXEC2=mult
+SRC2=mult.c
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+#directories
+PREFIX=testbench-tool/Testbench/bin/files
+SOURCE=testbench-tool/Testbench/bin/dir
+LV2PATH=/usr/lib/lv2
+OUTPUT=/home/$USER/testbench-tool/Testbench/output
+#clean up this line to make it universal output={pwd} during instalation
+
+#variables
+CPUlabel=0
+CPUmultiplier=0
+CALVAL=0.585 #ms #cpu load of calibrate plugin on current gen MOD DUO.
+index="0"
+
+declare -a ARRAY
+
+#other
+CALURI=http://moddevices.com/plugins/mod-devel/calibrate
+
+cd ~/$SOURCE
+if [ "$SRC1" -nt "$EXEC1" ]; then       #check if there is a newer version of .c
+  echo "rebuilding $EXEC1......"
+  $CC -o $EXEC1 $SRC1                   #compile the .c file to a binary file
+fi
+if [ "$SRC2" -nt "$EXEC2" ]; then
+  echo "rebuilding $EXEC2......"
+  $CC -o $EXEC2 $SRC2
+fi
+
+#check if calibration has been done before. If not, re-calibrate
+cd ~/$PREFIX
+if [ ! -e caloutput.txt ]; then
+	echo "================="
+	echo "= Recalibrating ="
+	echo "================="
+	cd $LV2PATH
+	if ! grep -rq "$CALURI" *; then
+		sudo cp -R /home/jarno/$SOURCE/calibrate.lv2 LV2PATH
+		sudo chmod 755 calibrate.lv2; fi
+	cd ~/$PREFIX
+	lv2bm --full-test $CALURI &>> tmp
+	sed -i '1,2d' tmp & awk '{ print $3 }' tmp > caloutput.txt; rm tmp
+	s=$(<caloutput.txt); set -- $s; cd ~/$SOURCE
+	CPUmultiplier=`./$EXEC2 $1 $2 $3 $4 $5 $CALVAL`; cd ~/$PREFIX; rm caloutput.txt
+fi
+
+cd ~/$PREFIX
+exec 3<welcome
+while read line
+do
+	echo -e "$line "
+done <&3
+while true; do
+	read -p '>' dis1 audiodis
+	case $dis1 in
+	"full-test")
+	read -p 'Please provide Plugin URI: ' uriInput
+	cd $LV2PATH
+	if ! grep -rq "$uriInput" *; then
+			echo "Invalid URI. make sure that the plugin is installed in the LV2PATH."
+		else 
+			echo "======================"
+			echo "= Checking .ttl data ="
+			echo "======================"
+			#filler
+			fldr=$(grep -rl --include="*.ttl*" --exclude="manifest.ttl" "$uriInput" ${pwd} | cut -d/ -f1)
+			#used to return the folder name of the plugin. grep to find paths with filtering, cut to show first element
+			sord_validate_lv2 $fldr;
+			#used to validate .ttl data
+			echo "==========================="
+			echo "= Performing memory tests ="
+			echo "==========================="
+		cd ~/$PREFIX
+
+		valgrind --leak-check=full --show-reachable=yes lv2bm $uriInput; echo ""
+		lv2bm --full-test $uriInput
+		read -p 'Do you want to add a CPU label? [Y/n]: ' GenerateLabel
+		if [ "$GenerateLabel" = "Y" ] || [ "$GenerateLabel" = "y" ]; then
+			echo "========================="
+			echo "= Generating CPU label  ="
+			echo "========================="
+			while [ $index -lt 30 ]
+			do
+			lv2bm --full-test $uriInput &>> tmp
+			sed -i '1,2d' tmp & awk '{ print $3 }' tmp > genoutput.txt; rm tmp
+			s=$(<genoutput.txt); set -- $s; cd ~/$SOURCE
+			CPUlabel=`./$EXEC1 $1 $2 $3 $4 $5 $CPUmultiplier`; cd ~/$PREFIX; rm genoutput.txt
+			#remove first three elements and print fourth element in genoutput. 
+			#link variable $1 will become the first element in, $2 the second etc
+			ARRAY[index]=$CPUlabel
+			index=$[$index+1]
+			done
+			printf "%s\n" "${ARRAY[@]}" > RESULT
+			if [ "$?" == 2 ]; then
+  				echo "error performing calculation!"
+				else
+				finalResult="$(awk '{s+=$1} END {print "" s/NR}' RESULT)"; rm RESULT
+				#awk command incrementen met nummer op lijn en het eindresultaat delen door het aantal regels. environmental variable
+				echo "Average CPU load: $finalResult %"
+				#The code remaining in this statement is used for beta testing
+				#The actual .ttl data is not modified, instead a copy is made for validation
+				#voor testen gebruik mod_tap tremolo. Voor alsnog lokaal getest
+				cd $LV2PATH/$fldr
+				oldttl=$(grep -rl --include="*.ttl*" --exclude="manifest.ttl" --exclude="modgui.ttl" "$uriInput" ${pwd} | cut -d/ -f2)
+				sudo cp $oldttl $OUTPUT
+				cd $OUTPUT; sudo chmod 666 $oldttl
+				#used to return the folder name of the plugin. grep to find paths with filtering, cut to show second element
+				sed 's/.*""";.*/\n&/' $oldttl > tmp.ttl
+				sed 's/.*""";.*/'"This plugin has an average CPU load of: $finalResult %"'\n&/' tmp.ttl > $oldttl; rm tmp.ttl
+				cd ~/$PREFIX
+				echo "========"
+				echo "= Done ="
+				echo "========"
+			fi		
+		CPUlabel=0
+		index="0"
+		#set variables back to 0
+		fi
+	fi
+	;; 
+	"audio")
+		if [ "$audiodis" = "frequency" ]
+		then
+			read -p 'Please provide Plugin URI: ' uriInput
+			cd $LV2PATH
+			if ! grep -rq "$uriInput" *; then
+				echo "Invalid URI. make sure that the plugin is installed in the LV2PATH."
+			else
+			lv2bm -i sweep --full-test $uriInput
+			fi
+		elif [ "$audiodis" = "impulse" ]; then
+				read -p 'Please provide Plugin URI: ' uriInput
+				cd $LV2PATH
+			if ! grep -rq "$uriInput" *; then
+				echo "Invalid URI. make sure that the plugin is installed in the LV2PATH."
+			else
+				lv2bm -i impulse --full-test $uriInput
+			fi
+		else
+			echo "unknown command. type help to view a lost of commands"
+		fi
+		;;
+	"midi")
+		echo "TODO Implement MIDI test"
+		;;
+	"help")
+		cd ~/$PREFIX
+		exec 3<cmd
+		while read line
+		do
+			echo -e "$line "
+		done <&3
+		;;
+	"lv2ls")
+			lv2ls
+		;;
+	"exit")
+		exit 0
+		;;
+	*)
+		echo "unknown command. type help to view a list of commands."
+	;;
+	esac
+done

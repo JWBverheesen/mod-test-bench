@@ -1,0 +1,43 @@
+#!/bin/bash
+
+password=420
+
+read -p "Validate Date : " date             #ask for user input
+
+pat="^[0-9]{8}$"                            #create a patern (8 numbers between 0 and 9)
+
+if [[ $date =~ $pat ]]; then                #check user input against patern
+  echo "$date is valid"
+else
+  echo "$date not valid"
+fi
+
+read -sp "Enter the secret code : " secret  #Hide user input from terminal
+
+if [ "$secret" == "$password" ]; then
+  echo "enter"
+else
+  echo "wrong password"
+fi
+
+
+OIFS="$IFS"                                 #save original ISF version
+
+IFS=","                                     #seperated by a comma
+
+read -p "Enter 2 numbers to add separated by a comma : " num1 num2
+
+num1=${num1//[[:blank:]]/}                  #parameter expansion to substitude white space
+num2=${num2//[[:blank:]]/}
+
+sum=$((num1+num2))                          #sum the two numbers
+
+echo "$num1 + $num2 = $sum"
+
+IFS="$OIFS"                                 #Set back old IFS value
+
+name="Jarno"  
+echo "${name}'s tutorial"                   #parameter expansion ${} to add 'S
+
+samp_string="The dog climbed the tree"
+echo "${samp_string//dog/cat}"              #parameter expansion to change dog to cat

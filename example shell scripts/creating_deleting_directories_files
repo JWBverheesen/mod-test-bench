@@ -1,0 +1,42 @@
+#!/bin/bash
+
+read -p "Do you want to create a new folder? Type 0 for no and 1 for yes! " dis1
+
+if [ $dis1 -eq 1 ]
+  then
+[ -d samp_dir ] || mkdir samp_dir      #create directory called samp_dir
+
+cd samp_dir                            #goto samp_dir
+
+touch samp_file.txt                    #create file samp_file
+
+echo "Welcome to this tutorial about bash programming! " >> samp_file.txt  #add a line of text to the samp_file.txt file
+
+read -p "Do you want to open samp_dir sample_file? Type 0 for no and 1 for yes! " dis2
+
+if [ $dis2 -eq 1 ]
+then
+
+xdg-open samp_file.txt                #open the sample_file 
+
+fi
+
+read -p "Do you want to delete samp_dir? Type 0 for no and 1 for yes! " dis3
+
+if [ $dis3 -eq 1 ]
+then
+
+rm -f samp_file.txt                   #remove the samp_file
+
+cd -
+
+rmdir samp_dir                        #remove the samp_dir
+
+else
+  echo "Have a nice day."
+fi
+
+
+else
+  echo "To bad! Have a nice day."
+fi

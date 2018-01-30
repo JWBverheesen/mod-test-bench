@@ -1,0 +1,24 @@
+#!/bin/bash
+
+read -p "Enter a number: " num     #same as conditions_1 but with logic operators
+
+if ((num == 10)); then
+  echo "your number equals 10"
+fi
+
+if ((num > 10)); then
+  echo "your number is greater than 10"
+else
+  echo "your number is less than 10"
+fi
+
+if (( (( num % 2)) == 0)); then
+  echo "Your number is even"
+fi
+
+if (( ((num > 0 )) && ((num < 11 )) )); then
+  echo "$num is a number between 1 and 10"
+else
+  echo "$num is not a number between 1 and 10"
+fi
+
